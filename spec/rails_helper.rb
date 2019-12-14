@@ -33,10 +33,6 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-Fog.mock!
-Fog.credentials_path = Rails.root.join('config/fog_credentials.yml')
-connection = Fog::Storage.new(:provider => 'AWS')
-connection.directories.create(:key => 'grammable-cvd')
 
 
 RSpec.configure do |config|
