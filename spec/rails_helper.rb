@@ -32,9 +32,17 @@ rescue ActiveRecord::PendingMigrationError => e
   puts e.to_s.strip
   exit 1
 end
+
+Fog.mock!
+Fog.credentials_path = Rails.root.join('config/fog_credentials.yml')
+connection = Fog::Storage.new(:provider => 'AWS')
+connection.directories.create(:key => 'grammable-cvd-bucket')
+
+
 RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
+  include ActionDispatch::TestProcess
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
